@@ -27,3 +27,7 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# NetBeans Android plugin
+nbandroid/
+private/
