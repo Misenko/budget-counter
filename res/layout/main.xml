@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:custom="http://schemas.android.com/apk/res/kimle.michal.android.view"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:text="45.00£"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:textSize="75sp"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <kimle.michal.android.view.KeypadView
+        android:id="@+id/keypad"
+        android:layout_weight="4"
+        android:layout_width="fill_parent"
+        android:layout_height="0px"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="0px"
+                  android:orientation="horizontal"
+                  android:layout_weight="1">
+        <Button android:id="@+id/button_ok"
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/ok"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:text="£"
+            android:gravity="right|center_vertical"
+            android:layout_weight="4"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <ImageButton
+            android:id="@+id/button_delete"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:background="@drawable/item_background"
+            android:src="@drawable/ic_backspace"/>
+    </LinearLayout>
+
+</LinearLayout>
+
