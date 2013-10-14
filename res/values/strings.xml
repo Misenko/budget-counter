@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- MainActivity -->
     <string name="app_name">BudgetCounter</string>
     <string name="one">1</string>
     <string name="two">2</string>
@@ -14,4 +15,33 @@
     <string name="dot">.</string>
     <string name="fifty">.50</string>
     <string name="ok">OK</string>
+
+    <!-- MainActivity menu-->
+    <string name="settings">Settings</string>
+
+    <!-- SettingsActivity -->
+    <string-array name="currency_string_array">
+        <item>Euro €</item>
+        <item>Pound sterling £</item>
+    </string-array>
+    <string-array name="currency_value_array">
+        <item>euro</item>
+        <item>pound</item>
+    </string-array>
+    <string name="currency">Currency</string>
+    <string name="currency_prompt">Choose currency</string>
+    <string name="budget">Current week\'s budget</string>
+    <string name="week_start">Week starts on</string>
+    <string-array name="week_start_string_array">
+        <item>Monday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="week_start_value_array">
+        <item>monday</item>
+        <item>sunday</item>
+    </string-array>
+    <string name="week_start_prompt">Choose start of the week</string>
+    <string name="default_euro">euro</string>
+    <string name="default_monday">monday</string>
+
 </resources>
