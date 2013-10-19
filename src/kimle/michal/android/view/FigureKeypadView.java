@@ -11,16 +11,17 @@ import kimle.michal.android.activity.R;
 
 public class FigureKeypadView extends LinearLayout implements Button.OnClickListener {
 
-    private static final float HIGHEST_POSITION = 100;
-    private static final float START_POSITION = 1;
-    private static final float LOWEST_POSITION = 0.01f;
-    private static final float FIGURE_START = 0;
+    private static final int FIGURE_START = 0;
+    private static final int COEF = 10;
+    private static final int TOP = 1000;
+    private static final int DECIMAL_TOP = 10;
+    private static final int FIFTY = 50;
 
-    private Button numbers[] = new Button[10];
+    private final Button numbers[] = new Button[10];
     private Button dot;
     private Button fifty;
-    private float figure = FIGURE_START;
-    private float pos = START_POSITION;
+    private int figure = FIGURE_START;
+    private int decimalFigure = FIGURE_START;
     private boolean onDecimal = false;
 
     public FigureKeypadView(Context context, AttributeSet attrs) {
@@ -75,48 +76,86 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
             case (R.id.button_7):
             case (R.id.button_8):
             case (R.id.button_9):
-                figure = (figure * pos) + Float.parseFloat((b.getText().toString()));
-                pos *= 10;
-                if (pos > HIGHEST_POSITION) {
-                    setNumbers(false);
+                int value = Integer.parseInt((b.getText().toString()));
+                if (onDecimal) {
+                    decimalFigure = (decimalFigure * COEF) + value;
+                    if (decimalFigure >= DECIMAL_TOP) {
+                        setNumbers(false);
+                    }
+                } else {
+                    figure = (figure * COEF) + value;
+                    if (figure >= TOP) {
+                        setNumbers(false);
+                    }
                 }
                 break;
             case (R.id.button_50):
-                figure += 0.5;
+                decimalFigure = FIFTY;
                 setNumbers(false);
                 setDecimal(false);
-                pos = START_POSITION;
-                onDecimal = true;
                 break;
             case (R.id.button_dot):
                 setDecimal(false);
-                pos = LOWEST_POSITION;
-                onDecimal = true;
+                setNumbers(true);
                 break;
         }
+        updateDisplay();
+    }
 
+    public void updateDisplay() {
         Activity activity = (Activity) getContext();
         if (activity instanceof FigureKeypadViewHandler) {
             FigureKeypadViewHandler fkvh = (FigureKeypadViewHandler) activity;
-            fkvh.onFigureChange(figure);
+            fkvh.onFigureChange(figure + ((float) decimalFigure / (DECIMAL_TOP * COEF)));
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        updateDisplay();
     }
 
     public void reset() {
         figure = FIGURE_START;
-        onDecimal = false;
-        pos = START_POSITION;
+        decimalFigure = FIGURE_START;
         setDecimal(true);
         setNumbers(true);
+        updateDisplay();
     }
 
     public void deleteLast() {
+        if (onDecimal) {
+            if (decimalFigure == FIGURE_START) {
+                setDecimal(true);
+                deleteLast();
+                return;
+            }
 
+            decimalFigure = (int) Math.floor(decimalFigure / 10);
+            if (decimalFigure == FIGURE_START) {
+                setDecimal(true);
+                if (figure >= TOP) {
+                    setNumbers(false);
+                } else {
+                    setNumbers(true);
+                }
+            }
+        } else {
+            if (figure == FIGURE_START) {
+                return;
+            }
+
+            figure = (int) Math.floor(figure / 10);
+            setNumbers(true);
+        }
+
+        updateDisplay();
     }
 
     private void setDecimal(boolean status) {
         dot.setEnabled(status);
         fifty.setEnabled(status);
+        onDecimal = !status;
     }
 
     private void setNumbers(boolean status) {

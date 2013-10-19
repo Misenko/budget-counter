@@ -11,14 +11,15 @@ import android.view.Window;
 import kimle.michal.android.view.FigureDisplayView;
 import kimle.michal.android.view.FigureKeypadView;
 
-public class MainActivity extends Activity implements FigureKeypadView.FigureKeypadViewHandler {
+public class MainActivity extends Activity implements FigureKeypadView.FigureKeypadViewHandler,
+        FigureDisplayView.FigureDisplayViewHandler {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
     }
 
     @Override
@@ -47,5 +48,15 @@ public class MainActivity extends Activity implements FigureKeypadView.FigureKey
     public void onFigureChange(float figure) {
         FigureDisplayView fdv = (FigureDisplayView) findViewById(R.id.display);
         fdv.setDisplayContent(figure);
+    }
+
+    public void onBackspaceClick() {
+        FigureKeypadView fkv = (FigureKeypadView) findViewById(R.id.keypad);
+        fkv.deleteLast();
+    }
+
+    public void onBackspaceLongClick() {
+        FigureKeypadView fkv = (FigureKeypadView) findViewById(R.id.keypad);
+        fkv.reset();
     }
 }
