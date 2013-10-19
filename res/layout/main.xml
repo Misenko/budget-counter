@@ -5,9 +5,9 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
     <TextView
+        android:id="@+id/textview_week_remaining"
         android:layout_width="fill_parent"
         android:layout_height="0px"
-        android:text="45.00£"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="center"
         android:layout_weight="2"
@@ -16,16 +16,27 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
-    <kimle.michal.android.view.KeypadView
+    <kimle.michal.android.view.FigureKeypadView
         android:id="@+id/keypad"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:layout_width="fill_parent"
         android:layout_height="0px"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <kimle.michal.android.view.FigureDisplayView
+        android:id="@+id/display"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0px"/>
+    <Button android:id="@+id/button_ok"
+            android:layout_width="fill_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/ok"/>
+    <!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="fill_parent"
                   android:layout_height="0px"
                   android:orientation="horizontal"
@@ -33,28 +44,19 @@
         <Button android:id="@+id/button_ok"
                 android:layout_width="0px"
                 android:layout_height="fill_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="@string/ok"/>
         <View
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"/>
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="fill_parent"
-            android:text="£"
-            android:gravity="right|center_vertical"
+        <kimle.michal.android.view.FigureDisplayView
+            android:id="@+id/display"
             android:layout_weight="4"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-        <ImageButton
-            android:id="@+id/button_delete"
             android:layout_width="0px"
-            android:layout_height="fill_parent"
-            android:layout_weight="2"
-            android:background="@drawable/item_background"
-            android:src="@drawable/ic_backspace"/>
-    </LinearLayout>
+            android:layout_height="fill_parent"/>
+    </LinearLayout> -->
 
 </LinearLayout>
 

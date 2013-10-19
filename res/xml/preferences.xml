@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
-        android:key="budgetcounter_pref"
+        android:key="@string/currency_key"
         android:title="@string/currency"
         android:dialogTitle="@string/currency_prompt"
         android:entries="@array/currency_string_array"
         android:entryValues="@array/currency_value_array"
-        android:defaultValue="@string/default_euro" />
+        android:defaultValue="@string/default_currency" />
     <EditTextPreference
-        android:key="budgetcounter_pref"
+        android:key="@string/budget_key"
         android:title="@string/budget"
-        android:defaultValue=""/>
+        android:defaultValue="@string/default_budget"/>
     <ListPreference
-        android:key="budgetcounter_pref"
+        android:key="@string/week_start_key"
         android:title="@string/week_start"
         android:dialogTitle="@string/week_start_prompt"
         android:entries="@array/week_start_string_array"
         android:entryValues="@array/week_start_value_array"
-        android:defaultValue="@string/default_monday" />
+        android:defaultValue="@string/default_week_start" />
 </PreferenceScreen>

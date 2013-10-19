@@ -15,33 +15,39 @@
     <string name="dot">.</string>
     <string name="fifty">.50</string>
     <string name="ok">OK</string>
+    <string name="backspace">Backspace</string>
 
     <!-- MainActivity menu-->
     <string name="settings">Settings</string>
 
     <!-- SettingsActivity -->
     <string-array name="currency_string_array">
-        <item>Euro €</item>
-        <item>Pound sterling £</item>
+        <item name="1">Euro €</item>
+        <item name="2">Pound sterling £</item>
     </string-array>
     <string-array name="currency_value_array">
-        <item>euro</item>
-        <item>pound</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
     </string-array>
     <string name="currency">Currency</string>
     <string name="currency_prompt">Choose currency</string>
     <string name="budget">Current week\'s budget</string>
     <string name="week_start">Week starts on</string>
     <string-array name="week_start_string_array">
-        <item>Monday</item>
-        <item>Sunday</item>
+        <item name="1">Monday</item>
+        <item name="2">Sunday</item>
     </string-array>
     <string-array name="week_start_value_array">
-        <item>monday</item>
-        <item>sunday</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
     </string-array>
     <string name="week_start_prompt">Choose start of the week</string>
-    <string name="default_euro">euro</string>
-    <string name="default_monday">monday</string>
+    <string name="default_currency">1</string>
+    <string name="default_week_start">1</string>
+    <string name="default_budget">45.00</string>
+
+    <string name="currency_key">pref_currency</string>
+    <string name="budget_key">pref_budget</string>
+    <string name="week_start_key">pref_week_start</string>
 
 </resources>
