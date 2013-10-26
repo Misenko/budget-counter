@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:custom="http://schemas.android.com/apk/res/kimle.michal.android.view"
+              xmlns:kimle="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
@@ -12,51 +12,17 @@
         android:gravity="center"
         android:layout_weight="2"
         android:textSize="75sp"/>
-    <View
+    <kimle.michal.android.view.FigureInputView
+        android:id="@+id/figure_input"
+        android:layout_weight="7"
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-    <kimle.michal.android.view.FigureKeypadView
-        android:id="@+id/keypad"
-        android:layout_weight="6"
-        android:layout_width="fill_parent"
-        android:layout_height="0px"/>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-    <kimle.michal.android.view.FigureDisplayView
-        android:id="@+id/display"
-        android:layout_weight="1"
-        android:layout_width="fill_parent"
-        android:layout_height="0px"/>
+        android:layout_height="0px"
+        kimle:displayPosition="bottom"/>
     <Button android:id="@+id/button_ok"
             android:layout_width="fill_parent"
             android:layout_height="0px"
             android:layout_weight="1"
             style="?android:attr/borderlessButtonStyle"
             android:text="@string/ok"/>
-    <!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="fill_parent"
-                  android:layout_height="0px"
-                  android:orientation="horizontal"
-                  android:layout_weight="1">
-        <Button android:id="@+id/button_ok"
-                android:layout_width="0px"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                style="?android:attr/borderlessButtonStyle"
-                android:text="@string/ok"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"/>
-        <kimle.michal.android.view.FigureDisplayView
-            android:id="@+id/display"
-            android:layout_weight="4"
-            android:layout_width="0px"
-            android:layout_height="fill_parent"/>
-    </LinearLayout> -->
-
 </LinearLayout>
 

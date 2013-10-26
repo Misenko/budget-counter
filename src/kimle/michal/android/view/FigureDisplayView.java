@@ -1,6 +1,5 @@
 package kimle.michal.android.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -17,17 +16,17 @@ import kimle.michal.android.activity.R;
 public class FigureDisplayView extends LinearLayout implements Button.OnClickListener, Button.OnLongClickListener {
 
     private static final String LOG = "FigureDisplayView";
-    private static final int EURO = 1;
-    private static final int POUND = 2;
-    private static final String EURO_SIGN = "€";
-    private static final String POUND_SIGN = "£";
+
+    private FigureKeypadView fkv;
+    private float figure;
+    private CharSequence formatedFigure;
 
     public FigureDisplayView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(HORIZONTAL);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.display, this, true);
+        inflater.inflate(R.layout.figure_display, this, true);
     }
 
     public FigureDisplayView(Context context) {
@@ -45,52 +44,43 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
 
     public void setDisplayContent(float figure) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        int currency = Integer.parseInt(pref.getString(getResources().getString(R.string.currency_key), ""));
-        String currencySign;
-        DecimalFormat df;
+        DecimalFormat df = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
 
-        switch (currency) {
-            case (POUND):
-                currencySign = POUND_SIGN;
-                df = new DecimalFormat(currencySign + "00.00");
-                break;
-            case (EURO):
-            default:
-                currencySign = EURO_SIGN;
-                df = new DecimalFormat("00.00" + currencySign);
-                break;
-        }
-
-        String displayString = df.format(figure);
+        formatedFigure = df.format(figure);
+        this.figure = figure;
 
         TextView displayView = (TextView) findViewById(R.id.textview_display);
-        displayView.setText(displayString);
+        displayView.setText(formatedFigure);
     }
 
     public void onClick(View v) {
-        Activity activity = (Activity) getContext();
-        if (activity instanceof FigureDisplayView.FigureDisplayViewHandler) {
-            FigureDisplayView.FigureDisplayViewHandler fdvh = (FigureDisplayView.FigureDisplayViewHandler) activity;
-            fdvh.onBackspaceClick();
+        if (fkv != null) {
+            fkv.deleteLast();
         }
     }
 
     public boolean onLongClick(View v) {
-        Activity activity = (Activity) getContext();
-        if (activity instanceof FigureDisplayView.FigureDisplayViewHandler) {
-            FigureDisplayView.FigureDisplayViewHandler fdvh = (FigureDisplayView.FigureDisplayViewHandler) activity;
-            fdvh.onBackspaceLongClick();
+        if (fkv != null) {
+            fkv.reset();
             return true;
         }
 
         return false;
     }
 
-    public interface FigureDisplayViewHandler {
-
-        public void onBackspaceClick();
-
-        public void onBackspaceLongClick();
+    public void setKeypad(FigureKeypadView fkv) {
+        this.fkv = fkv;
     }
 
+    public float getFigure() {
+        return figure;
+    }
+
+    public void setFigure(float figure) {
+        this.figure = figure;
+    }
+
+    public CharSequence getFormatedFigure() {
+        return formatedFigure;
+    }
 }

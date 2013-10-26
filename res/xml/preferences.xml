@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
+    <kimle.michal.android.preference.BudgetCounterListPreference
         android:key="@string/currency_key"
         android:title="@string/currency"
         android:dialogTitle="@string/currency_prompt"
         android:entries="@array/currency_string_array"
         android:entryValues="@array/currency_value_array"
         android:defaultValue="@string/default_currency" />
-    <EditTextPreference
+    <kimle.michal.android.preference.FigurePickerPreference
         android:key="@string/budget_key"
         android:title="@string/budget"
-        android:defaultValue="@string/default_budget"/>
-    <ListPreference
+        android:defaultValue="@figure/default_budget"/>
+    <kimle.michal.android.preference.BudgetCounterListPreference
         android:key="@string/week_start_key"
         android:title="@string/week_start"
         android:dialogTitle="@string/week_start_prompt"

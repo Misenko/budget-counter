@@ -8,11 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
-import kimle.michal.android.view.FigureDisplayView;
-import kimle.michal.android.view.FigureKeypadView;
 
-public class MainActivity extends Activity implements FigureKeypadView.FigureKeypadViewHandler,
-        FigureDisplayView.FigureDisplayViewHandler {
+public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,20 +40,5 @@ public class MainActivity extends Activity implements FigureKeypadView.FigureKey
     private void showSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-    }
-
-    public void onFigureChange(float figure) {
-        FigureDisplayView fdv = (FigureDisplayView) findViewById(R.id.display);
-        fdv.setDisplayContent(figure);
-    }
-
-    public void onBackspaceClick() {
-        FigureKeypadView fkv = (FigureKeypadView) findViewById(R.id.keypad);
-        fkv.deleteLast();
-    }
-
-    public void onBackspaceLongClick() {
-        FigureKeypadView fkv = (FigureKeypadView) findViewById(R.id.keypad);
-        fkv.reset();
     }
 }

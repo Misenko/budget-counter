@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="default_budget" format="float" type="figure">45.00</item>
+</resources>

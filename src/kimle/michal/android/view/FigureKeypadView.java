@@ -1,6 +1,5 @@
 package kimle.michal.android.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -10,6 +9,8 @@ import android.widget.LinearLayout;
 import kimle.michal.android.activity.R;
 
 public class FigureKeypadView extends LinearLayout implements Button.OnClickListener {
+
+    private static final String LOG = "FigureKeypadView";
 
     private static final int FIGURE_START = 0;
     private static final int COEF = 10;
@@ -23,13 +24,19 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
     private int figure = FIGURE_START;
     private int decimalFigure = FIGURE_START;
     private boolean onDecimal = false;
+    private FigureDisplayView fdv;
 
     public FigureKeypadView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.keypad, this, true);
+        inflater.inflate(R.layout.figure_keypad, this, true);
+
+    }
+
+    public FigureKeypadView(Context context) {
+        this(context, null);
     }
 
     @Override
@@ -56,10 +63,6 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
         for (int i = 0; i < 10; i++) {
             numbers[i].setOnClickListener(this);
         }
-    }
-
-    public FigureKeypadView(Context context) {
-        this(context, null);
     }
 
     public void onClick(View v) {
@@ -103,10 +106,8 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
     }
 
     public void updateDisplay() {
-        Activity activity = (Activity) getContext();
-        if (activity instanceof FigureKeypadViewHandler) {
-            FigureKeypadViewHandler fkvh = (FigureKeypadViewHandler) activity;
-            fkvh.onFigureChange(figure + ((float) decimalFigure / (DECIMAL_TOP * COEF)));
+        if (fdv != null) {
+            fdv.setDisplayContent(figure + ((float) decimalFigure / (DECIMAL_TOP * COEF)));
         }
     }
 
@@ -131,7 +132,7 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
                 return;
             }
 
-            decimalFigure = (int) Math.floor(decimalFigure / 10);
+            decimalFigure = (int) Math.floor(decimalFigure / COEF);
             if (decimalFigure == FIGURE_START) {
                 setDecimal(true);
                 if (figure >= TOP) {
@@ -139,13 +140,15 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
                 } else {
                     setNumbers(true);
                 }
+            } else {
+                setNumbers(true);
             }
         } else {
             if (figure == FIGURE_START) {
                 return;
             }
 
-            figure = (int) Math.floor(figure / 10);
+            figure = (int) Math.floor(figure / COEF);
             setNumbers(true);
         }
 
@@ -164,8 +167,23 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
         }
     }
 
-    public interface FigureKeypadViewHandler {
+    public void setDisplay(FigureDisplayView fdv) {
+        this.fdv = fdv;
+    }
 
-        public void onFigureChange(float figure);
+    public void setFigure(float newFigure) {
+        reset();
+        figure = (int) Math.floor(newFigure);
+        decimalFigure = (int) ((newFigure - figure) * (DECIMAL_TOP * COEF));
+
+        if (figure >= TOP || decimalFigure >= DECIMAL_TOP) {
+            setNumbers(false);
+        }
+
+        if (decimalFigure > FIGURE_START) {
+            setDecimal(false);
+        }
+
+        updateDisplay();
     }
 }
