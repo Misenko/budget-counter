@@ -45,6 +45,7 @@ public class FigurePickerPreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
+        Log.d(LOG, "in onBindDialogView");
 
         fiv = (FigureInputView) view.findViewById(R.id.figure_input);
         fiv.setValue(figure);

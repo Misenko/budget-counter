@@ -18,8 +18,9 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
     private static final String LOG = "FigureDisplayView";
 
     private FigureKeypadView fkv;
-    private float figure;
+    private float figure = 0;
     private CharSequence formatedFigure;
+    private DecimalFormat format;
 
     public FigureDisplayView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,13 +41,17 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
         ImageButton ib = (ImageButton) findViewById(R.id.button_backspace);
         ib.setOnClickListener(this);
         ib.setOnLongClickListener(this);
+        loadFormat();
+    }
+
+    public void loadFormat() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        format = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
+        setDisplayContent(figure);
     }
 
     public void setDisplayContent(float figure) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-        DecimalFormat df = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
-
-        formatedFigure = df.format(figure);
+        formatedFigure = format.format(figure);
         this.figure = figure;
 
         TextView displayView = (TextView) findViewById(R.id.textview_display);

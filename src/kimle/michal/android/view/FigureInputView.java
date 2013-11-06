@@ -66,4 +66,8 @@ public class FigureInputView extends LinearLayout {
     public CharSequence getFormatedValue() {
         return fdv.getFormatedFigure();
     }
+
+    public void updateSettings() {
+        fdv.loadFormat();
+    }
 }

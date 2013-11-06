@@ -8,8 +8,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
+import kimle.michal.android.view.FigureInputView;
 
 public class MainActivity extends Activity {
+
+    private final static String STATE_CUT = "stateCut";
+    private FigureInputView fiv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,29 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+
+        fiv = (FigureInputView) findViewById(R.id.figure_input);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        fiv.updateSettings();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putFloat(STATE_CUT, fiv.getValue());
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        fiv.setValue(savedInstanceState.getFloat(STATE_CUT));
     }
 
     @Override
