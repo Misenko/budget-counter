@@ -17,11 +17,13 @@ import kimle.michal.android.db.BudgetDbHelper;
 
 public class BudgetContentProvider extends ContentProvider {
 
+    private static final String LOG = "BudgetContentProvider";
     private BudgetDbHelper dbHelper;
     private SQLiteDatabase db;
     private static final String AUTHORITY = "kimle.michal.android.contentprovider";
     private static final int WEEKS = 10;
     private static final int WEEKS_ID = 11;
+    private static final int WEEKS_DATE = 15;
     private static final int TOTAL = 12;
     private static final int CUTS = 13;
     private static final int CUTS_ID = 14;
@@ -37,6 +39,7 @@ public class BudgetContentProvider extends ContentProvider {
     static {
         sURIMatcher.addURI(AUTHORITY, WEEKS_PATH, WEEKS);
         sURIMatcher.addURI(AUTHORITY, WEEKS_PATH + "/#", WEEKS_ID);
+        sURIMatcher.addURI(AUTHORITY, WEEKS_PATH + "/*", WEEKS_DATE);
         sURIMatcher.addURI(AUTHORITY, CUTS_PATH, CUTS);
         sURIMatcher.addURI(AUTHORITY, CUTS_PATH + "/#", CUTS_ID);
         sURIMatcher.addURI(AUTHORITY, TOTAL_PATH, TOTAL);
@@ -60,24 +63,25 @@ public class BudgetContentProvider extends ContentProvider {
             cursor = db.rawQuery("select "
                     + "sum(week_total) as 'overall_total' "
                     + "from ("
-                    + "select week._id, amount-sum(value) as week_total "
-                    + "from week, cut "
-                    + "where week._id = cut.week_id "
+                    + "select week._id, amount-coalesce(sum(value),0) as week_total "
+                    + "from week left outer join cut "
+                    + "on week._id = cut.week_id "
                     + "group by week._id);", null);
         } else {
             SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
             switch (uriType) {
                 case WEEKS_ID:
-                    queryBuilder.appendWhere(BudgetDbContract.BudgetDbEntry._ID + "="
+                    queryBuilder.appendWhere(BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN + "="
                             + uri.getLastPathSegment());
+                case WEEKS_DATE:
                 case WEEKS:
                     queryBuilder.setTables(BudgetDbContract.BudgetDbEntry.WEEK_TABLE
-                            + ", " + BudgetDbContract.BudgetDbEntry.CUT_TABLE
-                            + " WHERE " + BudgetDbContract.BudgetDbEntry._ID
+                            + " left outer join " + BudgetDbContract.BudgetDbEntry.CUT_TABLE
+                            + " on " + BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN
                             + " = " + BudgetDbContract.BudgetDbEntry.CUT_WEEK_ID_COLUMN);
                     break;
                 case CUTS_ID:
-                    queryBuilder.appendWhere(BudgetDbContract.BudgetDbEntry._ID + "="
+                    queryBuilder.appendWhere(BudgetDbContract.BudgetDbEntry.CUT_ID_COLUMN + "="
                             + uri.getLastPathSegment());
                 case CUTS:
                     break;
@@ -214,6 +218,8 @@ public class BudgetContentProvider extends ContentProvider {
     private void checkColumns(String[] projection) {
         String[] available = {
             BudgetDbContract.BudgetDbEntry._ID,
+            BudgetDbContract.BudgetDbEntry.CUT_ID_COLUMN,
+            BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN,
             BudgetDbContract.BudgetDbEntry.CUT_TIMESTAMP_COLUMN,
             BudgetDbContract.BudgetDbEntry.CUT_VALUE_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN,

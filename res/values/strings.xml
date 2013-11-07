@@ -34,16 +34,16 @@
     <string name="budget">Current week\'s budget</string>
     <string name="week_start">Week starts on</string>
     <string-array name="week_start_string_array">
-        <item name="1">Monday</item>
-        <item name="2">Sunday</item>
+        <item name="1">Sunday</item>
+        <item name="2">Monday</item>
     </string-array>
     <string-array name="week_start_value_array">
         <item name="1">1</item>
         <item name="2">2</item>
     </string-array>
     <string name="week_start_prompt">Choose start of the week</string>
-    <string name="default_currency">1</string>
-    <string name="default_week_start">1</string>
+    <string name="default_currency">00.00€</string>
+    <string name="default_week_start">2</string>
 
     <string name="currency_key">pref_currency</string>
     <string name="budget_key">pref_budget</string>

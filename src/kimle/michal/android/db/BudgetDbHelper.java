@@ -6,28 +6,28 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BudgetDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE = "budgetcounter.db";
     //week table
-    private static final String WEEK_TABLE_CREATE =
-            "CREATE TABLE " + BudgetDbContract.BudgetDbEntry.WEEK_TABLE + " ("
+    private static final String WEEK_TABLE_CREATE
+            = "CREATE TABLE " + BudgetDbContract.BudgetDbEntry.WEEK_TABLE + " ("
             + BudgetDbContract.BudgetDbEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN + " REAL NOT NULL, "
             + BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN + " DATE NOT NULL, "
             + BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN + " DATE NOT NULL);";
-    private static final String WEEK_TABLE_DROP =
-            "DROP TABLE IF EXISTS " + BudgetDbContract.BudgetDbEntry.WEEK_TABLE;
+    private static final String WEEK_TABLE_DROP
+            = "DROP TABLE IF EXISTS " + BudgetDbContract.BudgetDbEntry.WEEK_TABLE;
     //cut table
-    private static final String CUT_TABLE_CREATE =
-            "CREATE TABLE " + BudgetDbContract.BudgetDbEntry.CUT_TABLE + " ("
+    private static final String CUT_TABLE_CREATE
+            = "CREATE TABLE " + BudgetDbContract.BudgetDbEntry.CUT_TABLE + " ("
             + BudgetDbContract.BudgetDbEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + BudgetDbContract.BudgetDbEntry.CUT_VALUE_COLUMN + " REAL NOT NULL, "
             + BudgetDbContract.BudgetDbEntry.CUT_TIMESTAMP_COLUMN + " DATETIME NOT NULL, "
             + BudgetDbContract.BudgetDbEntry.CUT_WEEK_ID_COLUMN + " INTEGER NOT NULL REFERENCES "
             + BudgetDbContract.BudgetDbEntry.WEEK_TABLE + "("
             + BudgetDbContract.BudgetDbEntry._ID + ") ON DELETE CASCADE);";
-    private static final String CUT_TABLE_DROP =
-            "DROP TABLE IF EXISTS " + BudgetDbContract.BudgetDbEntry.CUT_TABLE;
+    private static final String CUT_TABLE_DROP
+            = "DROP TABLE IF EXISTS " + BudgetDbContract.BudgetDbEntry.CUT_TABLE;
 
     public BudgetDbHelper(Context context) {
         super(context, DATABASE, null, DATABASE_VERSION);
