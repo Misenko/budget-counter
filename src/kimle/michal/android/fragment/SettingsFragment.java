@@ -1,11 +1,16 @@
 package kimle.michal.android.fragment;
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import kimle.michal.android.activity.R;
+import kimle.michal.android.contentprovider.BudgetContentProvider;
+import kimle.michal.android.db.BudgetDbContract;
 import kimle.michal.android.preference.FigurePickerPreference;
 
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
@@ -26,6 +31,12 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         if (key.equals(getResources().getString(R.string.budget_key))) {
             FigurePickerPreference fpp = (FigurePickerPreference) findPreference(key);
             fpp.setSummary(FigurePickerPreference.getFormatedFigure(format, sharedPreferences.getFloat(key, 0)));
+
+            ContentValues values = new ContentValues();
+            Log.d(LOG, "" + BudgetDbContract.roundTwoDecimals(fpp.getFigure()));
+            values.put(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN, BudgetDbContract.roundTwoDecimals(fpp.getFigure()));
+            Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + BudgetDbContract.getCurrentWeek(getActivity()));
+            getActivity().getContentResolver().update(uri, values, null, null);
         }
 
         if (key.equals(getResources().getString(R.string.currency_key))) {

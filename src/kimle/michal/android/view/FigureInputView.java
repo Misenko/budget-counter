@@ -54,11 +54,11 @@ public class FigureInputView extends LinearLayout {
         this(context, null);
     }
 
-    public float getValue() {
+    public double getValue() {
         return fdv.getFigure();
     }
 
-    public void setValue(float value) {
+    public void setValue(double value) {
         fdv.setFigure(value);
         fkv.setFigure(value);
     }

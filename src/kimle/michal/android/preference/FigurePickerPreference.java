@@ -19,7 +19,7 @@ public class FigurePickerPreference extends DialogPreference {
 
     private static final String LOG = "FigurePickerPreference";
 
-    private float figure;
+    private double figure;
     private FigureInputView fiv;
 
     public FigurePickerPreference(Context context, AttributeSet attrs) {
@@ -38,7 +38,7 @@ public class FigurePickerPreference extends DialogPreference {
         if (positiveResult) {
             Log.d(LOG, "in onDialogClosed");
             figure = fiv.getValue();
-            persistFloat(figure);
+            persistFloat(new Float(figure));
         }
     }
 
@@ -61,7 +61,7 @@ public class FigurePickerPreference extends DialogPreference {
         } else {
             // Set default state from the XML attribute
             figure = (Float) defaultValue;
-            persistFloat(figure);
+            persistFloat(new Float(figure));
         }
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         setSummary(getFormatedFigure(sp.getString(getContext().getResources().getString(R.string.currency_key), ""), figure));
@@ -78,7 +78,7 @@ public class FigurePickerPreference extends DialogPreference {
 
         // Member that holds the setting's value
         // Change this data type to match the type saved by your Preference
-        float value;
+        double value;
 
         public SavedState(Parcelable superState) {
             super(superState);
@@ -94,7 +94,7 @@ public class FigurePickerPreference extends DialogPreference {
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
             // Write the preference's value
-            dest.writeFloat(value);  // Change this to write the appropriate data type
+            dest.writeDouble(value);  // Change this to write the appropriate data type
         }
 
         // Standard creator object using an instance of this class
@@ -144,12 +144,12 @@ public class FigurePickerPreference extends DialogPreference {
         fiv.setValue(myState.value);
     }
 
-    public static CharSequence getFormatedFigure(String format, float figure) {
+    public static CharSequence getFormatedFigure(String format, double figure) {
         DecimalFormat df = new DecimalFormat(format);
         return df.format(figure);
     }
 
-    public float getFigure() {
+    public double getFigure() {
         return figure;
     }
 }

@@ -107,7 +107,7 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
 
     public void updateDisplay() {
         if (fdv != null) {
-            fdv.setDisplayContent(figure + ((float) decimalFigure / (DECIMAL_TOP * COEF)));
+            fdv.setDisplayContent(figure + ((double) decimalFigure / (DECIMAL_TOP * COEF)));
         }
     }
 
@@ -171,7 +171,7 @@ public class FigureKeypadView extends LinearLayout implements Button.OnClickList
         this.fdv = fdv;
     }
 
-    public void setFigure(float newFigure) {
+    public void setFigure(double newFigure) {
         reset();
         figure = (int) Math.floor(newFigure);
         decimalFigure = (int) ((newFigure - figure) * (DECIMAL_TOP * COEF));

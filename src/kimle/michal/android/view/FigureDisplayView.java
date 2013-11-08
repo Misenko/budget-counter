@@ -18,7 +18,7 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
     private static final String LOG = "FigureDisplayView";
 
     private FigureKeypadView fkv;
-    private float figure = 0;
+    private double figure = 0;
     private CharSequence formatedFigure;
     private DecimalFormat format;
 
@@ -50,7 +50,7 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
         setDisplayContent(figure);
     }
 
-    public void setDisplayContent(float figure) {
+    public void setDisplayContent(double figure) {
         formatedFigure = format.format(figure);
         this.figure = figure;
 
@@ -77,11 +77,11 @@ public class FigureDisplayView extends LinearLayout implements Button.OnClickLis
         this.fkv = fkv;
     }
 
-    public float getFigure() {
+    public double getFigure() {
         return figure;
     }
 
-    public void setFigure(float figure) {
+    public void setFigure(double figure) {
         this.figure = figure;
     }
 

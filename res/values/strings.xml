@@ -49,4 +49,5 @@
     <string name="budget_key">pref_budget</string>
     <string name="week_start_key">pref_week_start</string>
 
+    <string name="date_format">yyyy-MM-dd</string>
 </resources>

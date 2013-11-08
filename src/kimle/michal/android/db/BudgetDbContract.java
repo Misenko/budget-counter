@@ -1,11 +1,26 @@
 package kimle.michal.android.db;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import kimle.michal.android.activity.R;
+import kimle.michal.android.contentprovider.BudgetContentProvider;
 
 public class BudgetDbContract {
 
     private BudgetDbContract() {
     }
+
+    private static final int DAYS_OF_WEEK = 7;
 
     public static abstract class BudgetDbEntry implements BaseColumns {
 
@@ -25,4 +40,59 @@ public class BudgetDbContract {
         public static final String LIMIT = "limit";
         public static final String GROUP_BY = "group by";
     }
+
+    public static Integer getCurrentWeek(Context context) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
+        Calendar cal = new GregorianCalendar();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int weekStartDay = Integer.parseInt(pref.getString(context.getResources().getString(R.string.week_start_key), ""));
+        cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
+
+        Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + dateFormat.format(cal.getTime()));
+        uri = uri.buildUpon().appendQueryParameter(BudgetDbContract.BudgetDbEntry.GROUP_BY,
+                BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN).build();
+        String[] projection = {
+            BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN
+        };
+
+        String selection = BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN + " = ?";
+        String selectionArgs[] = {
+            dateFormat.format(cal.getTime())
+        };
+
+        Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+
+        if (cursor == null || cursor.getCount() == 0) {
+            addCurrentWeek(context);
+            return getCurrentWeek(context);
+        }
+
+        cursor.moveToFirst();
+        return cursor.getInt(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry._ID));
+    }
+
+    public static void addCurrentWeek(Context context) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
+        ContentValues values = new ContentValues();
+        Calendar cal = new GregorianCalendar();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int weekStartDay = Integer.parseInt(pref.getString(context.getResources().getString(R.string.week_start_key), ""));
+
+        cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
+        Date weekStart = cal.getTime();
+        cal.add(Calendar.DAY_OF_WEEK, DAYS_OF_WEEK);
+        Date weekEnd = cal.getTime();
+
+        values.put(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN, roundTwoDecimals(pref.getFloat(context.getResources().getString(R.string.budget_key), 0)));
+        values.put(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN, dateFormat.format(weekStart));
+        values.put(BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN, dateFormat.format(weekEnd));
+
+        context.getContentResolver().insert(BudgetContentProvider.WEEKS_URI, values);
+    }
+
+    public static double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.valueOf(twoDForm.format(d));
+    }
+
 }
