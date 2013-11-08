@@ -45,6 +45,12 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
             FigurePickerPreference fpp = (FigurePickerPreference) findPreference(getResources().getString(R.string.budget_key));
             fpp.setSummary(FigurePickerPreference.getFormatedFigure(format, fpp.getFigure()));
         }
+
+        if (key.equals(getResources().getString(R.string.week_start_key))) {
+            ContentValues values = BudgetDbContract.getCurrentWeekDates(getActivity());
+            Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + BudgetDbContract.getCurrentWeek(getActivity()));
+            getActivity().getContentResolver().update(uri, values, null, null);
+        }
     }
 
     @Override

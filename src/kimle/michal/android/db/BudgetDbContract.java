@@ -45,8 +45,8 @@ public class BudgetDbContract {
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
         Calendar cal = new GregorianCalendar();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        int weekStartDay = Integer.parseInt(pref.getString(context.getResources().getString(R.string.week_start_key), ""));
-        cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
+        //int weekStartDay = Integer.parseInt(pref.getString(context.getResources().getString(R.string.week_start_key), ""));
+        //cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
 
         Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + dateFormat.format(cal.getTime()));
         uri = uri.buildUpon().appendQueryParameter(BudgetDbContract.BudgetDbEntry.GROUP_BY,
@@ -55,7 +55,9 @@ public class BudgetDbContract {
             BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN
         };
 
-        String selection = BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN + " = ?";
+        //String selection = BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN + " = ?";
+        String selection = "? between " + BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN
+                + " and " + BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN;
         String selectionArgs[] = {
             dateFormat.format(cal.getTime())
         };
@@ -72,6 +74,14 @@ public class BudgetDbContract {
     }
 
     public static void addCurrentWeek(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        ContentValues values = getCurrentWeekDates(context);
+        values.put(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN, roundTwoDecimals(pref.getFloat(context.getResources().getString(R.string.budget_key), 0)));
+
+        context.getContentResolver().insert(BudgetContentProvider.WEEKS_URI, values);
+    }
+
+    public static ContentValues getCurrentWeekDates(Context context) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
         ContentValues values = new ContentValues();
         Calendar cal = new GregorianCalendar();
@@ -83,11 +93,10 @@ public class BudgetDbContract {
         cal.add(Calendar.DAY_OF_WEEK, DAYS_OF_WEEK);
         Date weekEnd = cal.getTime();
 
-        values.put(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN, roundTwoDecimals(pref.getFloat(context.getResources().getString(R.string.budget_key), 0)));
         values.put(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN, dateFormat.format(weekStart));
         values.put(BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN, dateFormat.format(weekEnd));
 
-        context.getContentResolver().insert(BudgetContentProvider.WEEKS_URI, values);
+        return values;
     }
 
     public static double roundTwoDecimals(double d) {
