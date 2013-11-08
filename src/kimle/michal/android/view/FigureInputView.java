@@ -70,4 +70,8 @@ public class FigureInputView extends LinearLayout {
     public void updateSettings() {
         fdv.loadFormat();
     }
+
+    public void reset() {
+        fkv.reset();
+    }
 }

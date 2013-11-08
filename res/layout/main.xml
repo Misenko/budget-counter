@@ -23,6 +23,7 @@
             android:layout_height="0px"
             android:layout_weight="1"
             style="?android:attr/borderlessButtonStyle"
-            android:text="@string/ok"/>
+            android:text="@string/ok"
+            android:onClick="addCut"/>
 </LinearLayout>
 

@@ -1,6 +1,7 @@
 package kimle.michal.android.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,9 +11,12 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import kimle.michal.android.contentprovider.BudgetContentProvider;
 import kimle.michal.android.db.BudgetDbContract;
 import kimle.michal.android.view.FigureInputView;
@@ -35,10 +39,10 @@ public class MainActivity extends Activity {
         fiv = (FigureInputView) findViewById(R.id.figure_input);
         weekRemaining = (TextView) findViewById(R.id.textview_week_remaining);
 
-        loadRemainingValue(BudgetDbContract.getCurrentWeek(this));
+        updateRemainingValue(BudgetDbContract.getCurrentWeek(this));
     }
 
-    private void loadRemainingValue(int weekId) {
+    private void updateRemainingValue(int weekId) {
         Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + weekId);
         String[] projection = {
             BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN
@@ -51,21 +55,42 @@ public class MainActivity extends Activity {
             cursor.moveToFirst();
 
             remainingValue = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN));
-            updateRemainingValue();
+            formatRemainingValue();
         }
     }
 
-    private void updateRemainingValue() {
+    private void formatRemainingValue() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         DecimalFormat format = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
         weekRemaining.setText(format.format(remainingValue));
+    }
+
+    public void addCut(View v) {
+        double cutValue = fiv.getValue();
+        if (cutValue == 0) {
+            return;
+        }
+
+        int weekId = BudgetDbContract.getCurrentWeek(this);
+        SimpleDateFormat datetimeFormat = new SimpleDateFormat(getResources().getString(R.string.datetime_format));
+        Date timestamp = new Date(System.currentTimeMillis());
+
+        ContentValues values = new ContentValues();
+        values.put(BudgetDbContract.BudgetDbEntry.CUT_TIMESTAMP_COLUMN, datetimeFormat.format(timestamp));
+        values.put(BudgetDbContract.BudgetDbEntry.CUT_VALUE_COLUMN, cutValue);
+        values.put(BudgetDbContract.BudgetDbEntry.CUT_WEEK_ID_COLUMN, weekId);
+
+        getContentResolver().insert(BudgetContentProvider.CUTS_URI, values);
+
+        updateRemainingValue(weekId);
+        fiv.reset();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        loadRemainingValue(BudgetDbContract.getCurrentWeek(this));
+        updateRemainingValue(BudgetDbContract.getCurrentWeek(this));
         fiv.updateSettings();
     }
 
