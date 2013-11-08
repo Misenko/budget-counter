@@ -55,7 +55,7 @@ public class BudgetContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         int uriType = sURIMatcher.match(uri);
-        db = dbHelper.getWritableDatabase();
+        db = dbHelper.getReadableDatabase();
         Cursor cursor;
         checkColumns(projection);
 

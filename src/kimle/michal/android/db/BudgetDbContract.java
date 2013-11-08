@@ -45,8 +45,6 @@ public class BudgetDbContract {
         SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
         Calendar cal = new GregorianCalendar();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        //int weekStartDay = Integer.parseInt(pref.getString(context.getResources().getString(R.string.week_start_key), ""));
-        //cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
 
         Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + dateFormat.format(cal.getTime()));
         uri = uri.buildUpon().appendQueryParameter(BudgetDbContract.BudgetDbEntry.GROUP_BY,
@@ -55,7 +53,6 @@ public class BudgetDbContract {
             BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN
         };
 
-        //String selection = BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN + " = ?";
         String selection = "? between " + BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN
                 + " and " + BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN;
         String selectionArgs[] = {
@@ -66,11 +63,16 @@ public class BudgetDbContract {
 
         if (cursor == null || cursor.getCount() == 0) {
             addCurrentWeek(context);
+            if (cursor != null) {
+                cursor.close();
+            }
             return getCurrentWeek(context);
         }
 
         cursor.moveToFirst();
-        return cursor.getInt(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry._ID));
+        int weekId = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry._ID));
+        cursor.close();
+        return weekId;
     }
 
     public static void addCurrentWeek(Context context) {

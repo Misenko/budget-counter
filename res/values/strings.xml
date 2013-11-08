@@ -19,6 +19,8 @@
 
     <!-- MainActivity menu-->
     <string name="settings">Settings</string>
+    <string name="weeks_overview">Weeks overview</string>
+    <string name="remove_data">Remove all data</string>
 
     <!-- SettingsActivity -->
     <string-array name="currency_string_array">
@@ -51,4 +53,8 @@
 
     <string name="date_format">yyyy-MM-dd</string>
     <string name="datetime_format">yyyy-MM-dd HH:mm:ss.SSS</string>
+
+    <!-- Remove data dialog -->
+    <string name="rdd_title">Remove all data</string>
+    <string name="rdd_message">Remove all stored application data?</string>
 </resources>
