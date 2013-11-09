@@ -60,4 +60,8 @@
 
     <!-- WeeksOverviewActivity -->
     <string name="total">Total: </string>
+    <string name="weeks_delete">Delete</string>
+
+    <!-- CutsOverviewActivity -->
+    <string name="cuts_overview">Cuts overview</string>
 </resources>

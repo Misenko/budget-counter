@@ -10,8 +10,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
@@ -33,6 +38,50 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
         setContentView(R.layout.weeks_overview);
         loadFormat();
         setupAdapter();
+        loadWeeksTotalOverview();
+
+        registerForContextMenu(findViewById(android.R.id.list));
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.weeks_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.weeks_delete:
+                deleteWeek(info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void deleteWeek(long weekId) {
+        if (weekId == BudgetDbContract.getCurrentWeek(this)) {
+            String selection = BudgetDbContract.BudgetDbEntry.CUT_WEEK_ID_COLUMN + " = ?";
+            String[] arguments = {
+                String.valueOf(weekId)
+            };
+            getContentResolver().delete(BudgetContentProvider.CUTS_URI, selection, arguments);
+        } else {
+            Uri uri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + weekId);
+            getContentResolver().delete(uri, null, null);
+        }
+
+        updateOverview();
+    }
+
+    private void updateOverview() {
+        getLoaderManager().restartLoader(0, null, this);
+        adapter.notifyDataSetChanged();
+
         loadWeeksTotalOverview();
     }
 

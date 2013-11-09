@@ -25,6 +25,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="CutsOverviewActivity"
+                  android:label="@string/cuts_overview">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <provider
             android:name="kimle.michal.android.contentprovider.BudgetContentProvider"
             android:authorities="kimle.michal.android.contentprovider" >
