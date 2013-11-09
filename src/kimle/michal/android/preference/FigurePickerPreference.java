@@ -1,17 +1,14 @@
 package kimle.michal.android.preference;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import java.text.DecimalFormat;
 import kimle.michal.android.activity.R;
 import kimle.michal.android.view.FigureInputView;
 
@@ -63,8 +60,7 @@ public class FigurePickerPreference extends DialogPreference {
             figure = (Float) defaultValue;
             persistFloat(new Float(figure));
         }
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        setSummary(getFormatedFigure(sp.getString(getContext().getResources().getString(R.string.currency_key), ""), figure));
+        setSummary(PreferenceHelper.loadFormat(getContext()).format(figure));
     }
 
     @Override
@@ -142,11 +138,6 @@ public class FigurePickerPreference extends DialogPreference {
 
         // Set this Preference's widget to reflect the restored state
         fiv.setValue(myState.value);
-    }
-
-    public static CharSequence getFormatedFigure(String format, double figure) {
-        DecimalFormat df = new DecimalFormat(format);
-        return df.format(figure);
     }
 
     public double getFigure() {

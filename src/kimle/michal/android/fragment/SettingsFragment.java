@@ -8,15 +8,17 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import java.text.DecimalFormat;
 import kimle.michal.android.activity.R;
 import kimle.michal.android.contentprovider.BudgetContentProvider;
 import kimle.michal.android.db.BudgetDbContract;
 import kimle.michal.android.preference.FigurePickerPreference;
+import kimle.michal.android.preference.PreferenceHelper;
 
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 
     private static final String LOG = "SettingsFragment";
-    private String format;
+    private DecimalFormat format;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -24,13 +26,13 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         addPreferencesFromResource(R.xml.preferences);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sp.registerOnSharedPreferenceChangeListener(this);
-        format = sp.getString(getResources().getString(R.string.currency_key), "");
+        format = PreferenceHelper.loadFormat(getActivity());
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getResources().getString(R.string.budget_key))) {
             FigurePickerPreference fpp = (FigurePickerPreference) findPreference(key);
-            fpp.setSummary(FigurePickerPreference.getFormatedFigure(format, sharedPreferences.getFloat(key, 0)));
+            fpp.setSummary(format.format(sharedPreferences.getFloat(key, 0)));
 
             ContentValues values = new ContentValues();
             Log.d(LOG, "" + BudgetDbContract.roundTwoDecimals(fpp.getFigure()));
@@ -40,10 +42,10 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         }
 
         if (key.equals(getResources().getString(R.string.currency_key))) {
-            format = sharedPreferences.getString(key, "");
+            format = new DecimalFormat(sharedPreferences.getString(key, ""));
 
             FigurePickerPreference fpp = (FigurePickerPreference) findPreference(getResources().getString(R.string.budget_key));
-            fpp.setSummary(FigurePickerPreference.getFormatedFigure(format, fpp.getFigure()));
+            fpp.setSummary(format.format(fpp.getFigure()));
         }
 
         if (key.equals(getResources().getString(R.string.week_start_key))) {

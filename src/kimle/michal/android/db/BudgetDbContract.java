@@ -30,6 +30,8 @@ public class BudgetDbContract {
         public static final String CUT_ID_COLUMN = CUT_TABLE + "." + _ID;
         public static final String CUT_VALUE_COLUMN = "value";
         public static final String CUT_TIMESTAMP_COLUMN = "timestamp";
+        public static final String CUT_TIME_COLUMN = "time(timestamp)";
+        public static final String CUT_DATE_COLUMN = "date(timestamp)";
         public static final String CUT_WEEK_ID_COLUMN = "week_id";
         //week table
         public static final String WEEK_ID_COLUMN = WEEK_TABLE + "." + _ID;

@@ -52,6 +52,7 @@
     <string name="week_start_key">pref_week_start</string>
 
     <string name="date_format">yyyy-MM-dd</string>
+    <string name="time_format">HH:mm:ss</string>
     <string name="datetime_format">yyyy-MM-dd HH:mm:ss.SSS</string>
 
     <!-- Remove data dialog -->
@@ -64,4 +65,9 @@
 
     <!-- CutsOverviewActivity -->
     <string name="cuts_overview">Cuts overview</string>
+    <string name="cut_budget">Budget: </string>
+    <string name="from">From: </string>
+    <string name="to">To: </string>
+    <string name="week_total">Week total: </string>
+    <string name="cuts_delete">Delete</string>
 </resources>

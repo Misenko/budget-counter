@@ -5,11 +5,9 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -24,23 +22,32 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import kimle.michal.android.contentprovider.BudgetContentProvider;
 import kimle.michal.android.db.BudgetDbContract;
+import kimle.michal.android.preference.PreferenceHelper;
 
 public class WeeksOverviewActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG = "WeeksOverviewActivity";
     private SimpleCursorAdapter adapter;
     private DecimalFormat format;
+    public static final String WEEK_ID = "week_id";
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.weeks_overview);
-        loadFormat();
+        format = PreferenceHelper.loadFormat(this);
         setupAdapter();
         loadWeeksTotalOverview();
 
         registerForContextMenu(findViewById(android.R.id.list));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateOverview();
     }
 
     @Override
@@ -83,11 +90,6 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
         adapter.notifyDataSetChanged();
 
         loadWeeksTotalOverview();
-    }
-
-    private void loadFormat() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        format = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
     }
 
     private void setupAdapter() {
@@ -138,6 +140,8 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
 
             TextView textView = (TextView) findViewById(R.id.textview_total_remaining_content);
             textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN))));
+
+            cursor.close();
         }
     }
 
@@ -145,8 +149,7 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Intent i = new Intent(this, CutsOverviewActivity.class);
-        Uri weekUri = Uri.parse(BudgetContentProvider.WEEKS_URI + "/" + id);
-        i.putExtra(BudgetContentProvider.WEEK_CONTENT_ITEM_TYPE, weekUri);
+        i.putExtra(WEEK_ID, id);
 
         startActivity(i);
     }

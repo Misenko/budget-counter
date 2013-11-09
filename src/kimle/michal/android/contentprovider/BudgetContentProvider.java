@@ -86,6 +86,7 @@ public class BudgetContentProvider extends ContentProvider {
                     queryBuilder.appendWhere(BudgetDbContract.BudgetDbEntry.CUT_ID_COLUMN + "="
                             + uri.getLastPathSegment());
                 case CUTS:
+                    queryBuilder.setTables(BudgetDbContract.BudgetDbEntry.CUT_TABLE);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -223,6 +224,8 @@ public class BudgetContentProvider extends ContentProvider {
             BudgetDbContract.BudgetDbEntry.CUT_ID_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN,
             BudgetDbContract.BudgetDbEntry.CUT_TIMESTAMP_COLUMN,
+            BudgetDbContract.BudgetDbEntry.CUT_TIME_COLUMN,
+            BudgetDbContract.BudgetDbEntry.CUT_DATE_COLUMN,
             BudgetDbContract.BudgetDbEntry.CUT_VALUE_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN,
