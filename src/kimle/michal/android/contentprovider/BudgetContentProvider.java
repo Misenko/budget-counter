@@ -34,6 +34,8 @@ public class BudgetContentProvider extends ContentProvider {
     public static final Uri TOTAL_URI = Uri.parse("content://" + AUTHORITY + "/" + TOTAL_PATH);
     public static final Uri CUTS_URI = Uri.parse("content://" + AUTHORITY + "/" + CUTS_PATH);
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    public static final String WEEK_CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/weeks";
+    public static final String WEEK_CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/week";
     private static final String VND = "vnd.kimle.michal.android.contentprovider";
 
     static {
@@ -225,7 +227,8 @@ public class BudgetContentProvider extends ContentProvider {
             BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN,
-            BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN
+            BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN,
+            BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN
         };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));

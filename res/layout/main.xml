@@ -5,7 +5,7 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
     <TextView
-        android:id="@+id/textview_week_remaining"
+        android:id="@+id/textview_current_week_remaining"
         android:layout_width="fill_parent"
         android:layout_height="0px"
         android:textAppearance="?android:attr/textAppearanceLarge"

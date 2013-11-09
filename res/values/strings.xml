@@ -57,4 +57,7 @@
     <!-- Remove data dialog -->
     <string name="rdd_title">Remove all data</string>
     <string name="rdd_message">Remove all stored application data?</string>
+
+    <!-- WeeksOverviewActivity -->
+    <string name="total">Total: </string>
 </resources>

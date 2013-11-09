@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +40,7 @@ public class MainActivity extends Activity implements DialogInterface.OnClickLis
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 
         fiv = (FigureInputView) findViewById(R.id.figure_input);
-        weekRemaining = (TextView) findViewById(R.id.textview_week_remaining);
+        weekRemaining = (TextView) findViewById(R.id.textview_current_week_remaining);
 
         updateRemainingValue(BudgetDbContract.getCurrentWeek(this));
     }
@@ -55,12 +54,10 @@ public class MainActivity extends Activity implements DialogInterface.OnClickLis
                 BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN).build();
 
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        Log.d(LOG, "Cursor is: " + cursor);
         if (cursor != null) {
             cursor.moveToFirst();
 
             remainingValue = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN));
-            Log.d(LOG, "remainingValue: " + remainingValue);
             cursor.close();
             formatRemainingValue();
         }
