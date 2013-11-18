@@ -20,7 +20,7 @@ public class BudgetDbContract {
     private BudgetDbContract() {
     }
 
-    private static final int DAYS_OF_WEEK = 7;
+    private static final int DAYS_OFFSET = 6;
 
     public static abstract class BudgetDbEntry implements BaseColumns {
 
@@ -45,7 +45,7 @@ public class BudgetDbContract {
     }
 
     public static Integer getCurrentWeek(Context context) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.db_date_format));
         Calendar cal = new GregorianCalendar();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -87,7 +87,7 @@ public class BudgetDbContract {
     }
 
     public static ContentValues getCurrentWeekDates(Context context) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(context.getResources().getString(R.string.db_date_format));
         ContentValues values = new ContentValues();
         Calendar cal = new GregorianCalendar();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -95,7 +95,7 @@ public class BudgetDbContract {
 
         cal.set(Calendar.DAY_OF_WEEK, weekStartDay);
         Date weekStart = cal.getTime();
-        cal.add(Calendar.DAY_OF_WEEK, DAYS_OF_WEEK);
+        cal.add(Calendar.DAY_OF_WEEK, DAYS_OFFSET);
         Date weekEnd = cal.getTime();
 
         values.put(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN, dateFormat.format(weekStart));

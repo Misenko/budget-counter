@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:gravity="center_vertical|left"
         android:paddingLeft="10sp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20sp"
         android:layout_weight="2"/>
     <LinearLayout
         android:layout_width="0px"

@@ -5,22 +5,75 @@
               android:orientation="vertical">
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0px"
-        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5sp"
         android:orientation="vertical">
         <!-- header -->
+        <TextView
+            android:id="@+id/textview_dates_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="25sp"
+            android:paddingBottom="5sp"
+            android:gravity="center"/>
+        <!-- dates row -->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!-- budget row -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textview_budget_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:paddingLeft="10sp"
+                    android:text="@string/cut_budget"/>
+                <TextView
+                    android:id="@+id/textview_week_total_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:paddingLeft="10sp"
+                    android:text="@string/week_total"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingLeft="15sp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textview_budget_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/textview_week_total_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!--        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+             budget row
             <TextView
                 android:id="@+id/textview_budget_text"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:gravity="center_vertical|left"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:paddingLeft="10sp"
                 android:text="@string/cut_budget"/>
             <TextView
@@ -29,64 +82,20 @@
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:gravity="center"
-                android:textSize="30sp"/>
+                android:textSize="20sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!-- dates row -->
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <!-- from column -->
-                <TextView
-                    android:id="@+id/textview_from_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical|left"
-                    android:paddingLeft="10sp"
-                    android:text="@string/from"/>
-                <TextView
-                    android:id="@+id/textview_from_content"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="1">
-                <!-- to column -->
-                <TextView
-                    android:id="@+id/textview_to_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical|left"
-                    android:paddingLeft="10sp"
-                    android:text="@string/to"/>
-                <TextView
-                    android:id="@+id/textview_to_content"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!-- total row -->
+             total row
             <TextView
                 android:id="@+id/textview_week_total_text"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:gravity="center_vertical|left"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 android:paddingLeft="10sp"
                 android:text="@string/week_total"/>
             <TextView
@@ -95,15 +104,16 @@
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:gravity="center"
-                android:textSize="30sp"/>
-        </LinearLayout>
+                android:textSize="20sp"/>
+        </LinearLayout>-->
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@color/blackish"/>
     <ListView android:id="@android:id/list"
               android:layout_width="fill_parent"
-              android:layout_height="0px"
-              android:layout_weight="6"    />
+              android:divider="@color/blackish"
+              android:dividerHeight="1dp"
+              android:layout_height="fill_parent"/>
 </LinearLayout>

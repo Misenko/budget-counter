@@ -15,7 +15,10 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import java.sql.Date;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import kimle.michal.android.contentprovider.BudgetContentProvider;
 import kimle.michal.android.db.BudgetDbContract;
 import kimle.michal.android.preference.PreferenceHelper;
@@ -105,10 +108,11 @@ public class CutsOverviewActivity extends ListActivity implements LoaderManager.
 
             TextView textView = (TextView) findViewById(R.id.textview_budget_content);
             textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN))));
-            textView = (TextView) findViewById(R.id.textview_from_content);
-            textView.setText(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN)));
-            textView = (TextView) findViewById(R.id.textview_to_content);
-            textView.setText(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN)));
+            textView = (TextView) findViewById(R.id.textview_dates_content);
+            Date from = Date.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN)));
+            Date to = Date.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN)));
+            DateFormat df = new SimpleDateFormat(getResources().getString(R.string.date_format));
+            textView.setText(df.format(from) + " - " + df.format(to));
             textView = (TextView) findViewById(R.id.textview_week_total_content);
             textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN))));
 

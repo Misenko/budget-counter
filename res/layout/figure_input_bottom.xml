@@ -5,13 +5,9 @@
               android:layout_height="fill_parent">
     <kimle.michal.android.view.FigureKeypadView
         android:id="@+id/figure_keypad"
-        android:layout_weight="5"
+        android:layout_weight="6"
         android:layout_width="fill_parent"
         android:layout_height="0px"/>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
     <kimle.michal.android.view.FigureDisplayView
         android:id="@+id/figure_display"
         android:layout_weight="1"
