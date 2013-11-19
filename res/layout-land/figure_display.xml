@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="0px"
+                  android:layout_height="fill_parent"
+                  android:orientation="horizontal"
+                  android:layout_weight="4">
+        <TextView
+            android:id="@+id/textview_display"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_weight="3"
+            android:textSize="23sp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <ImageButton
+            android:id="@+id/button_backspace"
+            android:layout_width="0px"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/item_background"
+            android:src="@drawable/ic_backspace"
+            android:contentDescription="@string/backspace"/>
+    </LinearLayout>
+</merge>

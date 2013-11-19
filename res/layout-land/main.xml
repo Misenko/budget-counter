@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:kimle="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0px"
+        android:layout_height="fill_parent"
+        android:layout_weight="5">
+        <TextView
+            android:id="@+id/textview_current_week_remaining"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center"
+            android:textSize="57sp"/>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/button_ok"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/ok"
+            android:onClick="addCut"/>
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:background="@color/blackish"/>
+    <kimle.michal.android.view.FigureInputView
+        android:id="@+id/figure_input"
+        android:layout_weight="6"
+        android:layout_width="0px"
+        android:layout_height="fill_parent"
+        kimle:displayPosition="bottom"/>
+</LinearLayout>
+
