@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- MainActivity -->
-    <string name="app_name">BudgetCounter</string>
+    <string name="app_name">Budget Counter</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>

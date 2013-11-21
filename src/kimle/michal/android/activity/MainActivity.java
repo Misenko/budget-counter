@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import kimle.michal.android.contentprovider.BudgetContentProvider;
 import kimle.michal.android.db.BudgetDbContract;
+import kimle.michal.android.preference.PreferenceHelper;
 import kimle.michal.android.view.FigureInputView;
 
 public class MainActivity extends Activity implements DialogInterface.OnClickListener {
@@ -65,7 +67,11 @@ public class MainActivity extends Activity implements DialogInterface.OnClickLis
 
     private void formatRemainingValue() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        DecimalFormat format = new DecimalFormat(pref.getString(getResources().getString(R.string.currency_key), ""));
+        Resources res = getResources();
+        DecimalFormat format = new DecimalFormat(pref.getString(res.getString(R.string.currency_key), ""));
+        double budget = pref.getFloat(getResources().getString(R.string.budget_key), 0);
+
+        weekRemaining.setTextColor(res.getColor(PreferenceHelper.calculateColor(remainingValue, budget)));
         weekRemaining.setText(format.format(remainingValue));
     }
 

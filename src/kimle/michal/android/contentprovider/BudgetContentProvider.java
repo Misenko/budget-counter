@@ -63,9 +63,9 @@ public class BudgetContentProvider extends ContentProvider {
 
         if (uriType == TOTAL) {
             cursor = db.rawQuery("select "
-                    + "sum(week_total) as 'overall_total' "
+                    + "sum(week_total) as 'overall_total', sum(amount) as 'budget_total' "
                     + "from ("
-                    + "select week._id, amount-coalesce(sum(value),0) as week_total "
+                    + "select week._id, amount, amount-coalesce(sum(value),0) as 'week_total' "
                     + "from week left outer join cut "
                     + "on week._id = cut.week_id "
                     + "group by week._id);", null);
@@ -231,7 +231,8 @@ public class BudgetContentProvider extends ContentProvider {
             BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN,
-            BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN
+            BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN,
+            BudgetDbContract.BudgetDbEntry.WEEK_BUDGET_OVERALL_COLUMN
         };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));

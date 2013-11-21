@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -118,7 +119,9 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
 
                 if (columnIndex == cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN)) {
                     double value = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN));
+                    double budget = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN));
                     TextView textView = (TextView) view;
+                    textView.setTextColor(getResources().getColor(PreferenceHelper.calculateColor(value, budget)));
                     textView.setText(format.format(value));
                     return true;
                 }
@@ -132,15 +135,21 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
 
     private void loadWeeksTotalOverview() {
         String[] projection = {
-            BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN
+            BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN,
+            BudgetDbContract.BudgetDbEntry.WEEK_BUDGET_OVERALL_COLUMN
         };
         Cursor cursor = getContentResolver().query(BudgetContentProvider.TOTAL_URI, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
 
+            double overallTotal = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN));
+            double budgetTotal = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_BUDGET_OVERALL_COLUMN));
             TextView textView = (TextView) findViewById(R.id.textview_total_remaining_content);
-            textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_TOTAL_OVERALL_COLUMN))));
+            textView.setText(format.format(overallTotal));
+            textView.setTextColor(getResources().getColor(PreferenceHelper.calculateColor(overallTotal, budgetTotal)));
 
+            Log.d(LOG, "overall total: " + overallTotal);
+            Log.d(LOG, "budget total: " + budgetTotal);
             cursor.close();
         }
     }
@@ -157,6 +166,7 @@ public class WeeksOverviewActivity extends ListActivity implements LoaderManager
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
             BudgetDbContract.BudgetDbEntry.WEEK_ID_COLUMN,
+            BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN,
             BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN};

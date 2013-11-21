@@ -106,15 +106,22 @@ public class CutsOverviewActivity extends ListActivity implements LoaderManager.
         if (cursor != null) {
             cursor.moveToFirst();
 
+            double budget = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN));
+            double amount = cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN));
+
             TextView textView = (TextView) findViewById(R.id.textview_budget_content);
-            textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_AMOUNT_COLUMN))));
+            textView.setText(format.format(budget));
+            textView.setTextColor(getResources().getColor(PreferenceHelper.calculateColor(budget, budget)));
+
             textView = (TextView) findViewById(R.id.textview_dates_content);
             Date from = Date.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_START_COLUMN)));
             Date to = Date.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_END_COLUMN)));
             DateFormat df = new SimpleDateFormat(getResources().getString(R.string.date_format));
             textView.setText(df.format(from) + " - " + df.format(to));
+
             textView = (TextView) findViewById(R.id.textview_week_total_content);
-            textView.setText(format.format(cursor.getDouble(cursor.getColumnIndexOrThrow(BudgetDbContract.BudgetDbEntry.WEEK_OVERALL_COLUMN))));
+            textView.setText(format.format(amount));
+            textView.setTextColor(getResources().getColor(PreferenceHelper.calculateColor(amount, budget)));
 
             cursor.close();
         }
